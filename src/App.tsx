@@ -1,26 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react'
+import UploadCSV from './UploadCSV'
+import Chart from './Chart'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+interface TradeBalance {
+    date: number // Timestamp of the trade
+    balance: number // Account balance after the trade
 }
 
-export default App;
+function App() {
+    const [data, setData] = useState<TradeBalance[]>([])
+
+    return (
+        <div style={{ width: '100%', height: '100vh' }}>
+            <div style={{ padding: '20px', textAlign: 'center' }}>
+                <h1>Trading Data Visualizer</h1>
+                <UploadCSV setData={setData} />
+            </div>
+            {data.length > 0 ? (
+                <Chart data={data} />
+            ) : (
+                <div style={{ textAlign: 'center', marginTop: '50px' }}>
+                    <p>Please upload a CSV file to see the chart.</p>
+                </div>
+            )}
+        </div>
+    )
+}
+
+export default App
